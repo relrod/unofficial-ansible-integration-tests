@@ -1,0 +1,11 @@
+- when: ansible_os_family == 'Alpine'
+  block:
+    - package_facts:
+        manager: apk
+
+    - assert:
+        that:
+          - ansible_facts.packages is defined
+          - ansible_facts.packages|length > 10
+          - ansible_facts.packages['acl'][0]['name'] == 'acl'
+          - ansible_facts.packages['acl'][0]['version'][0] is match('\d')
